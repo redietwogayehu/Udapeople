@@ -25,7 +25,7 @@ jobs:
              npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
+          key: frontend-deps-{{ checksum "frontend/package-lock.json" }}
 
   build-backend:
     docker:
@@ -47,7 +47,7 @@ jobs:
              npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-deps-{{ checksum "TIER/package-lock.json" }}
+          key: backend-deps-{{ checksum "backend/package-lock.json" }}
 
   test-frontend:
     docker:
