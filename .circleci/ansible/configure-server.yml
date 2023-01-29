@@ -22,6 +22,10 @@
       apt:
         name: python3
         update_cache: yes# Your code here
+    - name: "Install PM2 Globally"
+      npm:
+        name: pm2
+        global: yes
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
