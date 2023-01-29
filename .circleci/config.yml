@@ -107,7 +107,7 @@ jobs:
         name:  Scan frontend packages
         command: |
           cd frontend
-          Scan frontend packagest
+          npm audit --audit-level=critical
 
     scan-backend:
       docker:
@@ -126,7 +126,7 @@ jobs:
         name: Scan backend packages
         command: |
           cd backend
-          Scan backend packages
+          npm audit --audit-level=critical
 
 
     
