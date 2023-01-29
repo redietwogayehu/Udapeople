@@ -156,6 +156,8 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend]
-      - notify_on_failure:
-          requires: [build-backend]
+      - notify_on_success:
+          requires:
+                - <Last Job>
+          
     
