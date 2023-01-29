@@ -139,15 +139,18 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
-          name: Run frontend tests
-          command: |
-            cd frontend
-            npm install
-            npm run test
-      - notify_on_failure
-                
+        name: Install dependencies
+        command: |
+          cd frontend
+          npm install
+    - run:
+        name: Run frontend unit tests
+        command: |
+          cd frontend
+          npm run test
   test-backend:
     docker:
       - image: circleci/node:13.8.0
