@@ -85,43 +85,50 @@ jobs:
             cd backend
             npm run test
 
-    scan-frontend:
-      docker:
-        - image: cimg/node:13.8.0
-      steps:
-        - checkout
-        - restore_cache:
+  scan-frontend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
           keys:
             - frontend-deps-{{ checksum "frontend/package-lock.json" }}
-        - run:
+      
+      - run:
           name: Install dependencies
           command: |
             cd frontend
             npm install
-        - run:
-          name: Scan frontend packages
-          command: |
-            cd frontend
-            npm audit --audit-level=critical
+      - run:
+           name: Scan frontend packages
+           command: |
+              cd frontend
+              npm audit --audit-level=critical
+      
+          
 
-    scan-backend:
-      docker:
+          
+
+  scan-backend:
+    docker:
         - image: cimg/node:13.8.0
-      steps:
-        - checkout
-        - restore_cache:
+    steps:
+      - checkout
+      - restore_cache:
           keys:
             - backend-deps-{{ checksum "backend/package-lock.json" }}
-        - run:
+
+      - run:
           name: Install dependencies
           command: |
             cd backend
             npm install
-        - run:
-          name: Scan backend packages
-          command: |
-            cd backend
-            npm audit --audit-level=critical
+      - run:
+            name: Scan backend packages
+            command: |
+              cd backend
+              npm audit --audit-level=critical
+
 
 workflows:
   default:
