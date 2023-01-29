@@ -16,7 +16,8 @@ commands:
             when: on_fail
             command: |
               # Empty frontend bucket
-              aws s3 rm s3://udapeople-k0aehenb2 
+              aws s3 rm s3://udapeople-k0aehenb2/&#8203;`oaicite:{"index":0,"invalid_reason":"Malformed citation <<parameters.Workflow_ID>>"}`&#8203; --recursive
+ 
               aws cloudformation delete-stack --stack-name udapeople-cloudfront-frontend-${parameters.Workflow_ID}
               aws cloudformation delete-stack --stack-name udapeople-cloudfront-backend-${parameters.Workflow_ID}
 
