@@ -130,12 +130,6 @@ jobs:
           npm audit --audit-level=critical
 
 
-    
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
-
-
             
 
 workflows:
