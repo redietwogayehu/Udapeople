@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  slack: circleci/slack@4.10.1
+    slack: circleci/slack@4.10.1
 
 commands:
   notify_on_failure:
@@ -162,5 +162,7 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - scan-backend:
+          requires: [build-backend]
+      - notify_on_success:
           requires: [build-backend]
     
