@@ -39,8 +39,8 @@ jobs:
             cd frontend
             npm run build
       - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
+            paths: [frontend/node_modules]
+            key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
       - notify_on_failure
 
   build-backend:
