@@ -1,62 +1,58 @@
-  version: 2.1
+version: 2.1
 
-
-
-    
-              
-  jobs:
-    build-frontend:
-      docker:
-        - image: circleci/node:13.8.0
-      steps:
-        - checkout
-        - restore_cache:
-            keys:
-                  - frontend-deps-{{ checksum "frontend/package-lock.json" }}
-        - run:
-            name: Install dependencies
-            command: |
-              cd frontend
-              npm install
-        - run:
-            name: Install dependencies
-            command: |
-              cd frontend
-              npm run build
-        - save_cache:
-            paths: [frontend/node_modules]
-            key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
-
-    build-backend:
-      docker:
-        - image: cimg/node:13.8.0 
-      steps:
-        - checkout
-        - restore_cache:
-            keys:
-                - backend-deps-{{ checksum "backend/package-lock.json" }}
-        - run:
-            name:  Install dependencies
-            command: |
-              cd backend
-              npm install
-        - run:
-            name:  Build backend
-            command: |
-              cd backend
-              npm run build
-        - save_cache:
-            paths: [backend/node_modules]
-            key: backend-deps-{{ checksum "TIER/package-lock.json" }}
-
-    test-frontend:
-      docker:
-      - image: cimg/node:13.8.0 
-      steps:
+jobs:
+  build-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
       - checkout
       - restore_cache:
           keys:
-          - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: |
+            cd frontend
+            npm install
+      - run:
+          name: Install dependencies
+          command: |
+            cd frontend
+            npm run build
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
+
+  build-backend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: |
+            cd backend
+            npm install
+      - run:
+          name: Build backend
+          command: |
+            cd backend
+            npm run build
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-deps-{{ checksum "TIER/package-lock.json" }}
+
+  test-frontend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           name: Install dependencies
           command: |
@@ -67,18 +63,17 @@
           command: |
             cd frontend
             npm run test
-    
-                  
-    test-backend:
-      docker:
+
+  test-backend:
+    docker:
       - image: cimg/node:13.8.0
         # Docker image here
-      steps:
+    steps:
       - checkout
       - restore_cache:
           keys:
-          - backend-deps-{{ checksum "backend/package-lock.json" }}
-      
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
+
       - run:
           name: Install dependencies
           command: |
@@ -90,34 +85,33 @@
             cd backend
             npm run test
 
-      scan-frontend:
-        docker:
+    scan-frontend:
+      docker:
         - image: cimg/node:13.8.0
-        steps:
+      steps:
         - checkout
         - restore_cache:
           keys:
-          - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
         - run:
           name: Install dependencies
           command: |
             cd frontend
             npm install
         - run:
-          name:  Scan frontend packages
+          name: Scan frontend packages
           command: |
             cd frontend
             npm audit --audit-level=critical
-            
 
-      scan-backend:
-        docker:
+    scan-backend:
+      docker:
         - image: cimg/node:13.8.0
-        steps:
+      steps:
         - checkout
         - restore_cache:
           keys:
-          - backend-deps-{{ checksum "backend/package-lock.json" }}
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
         - run:
           name: Install dependencies
           command: |
@@ -129,19 +123,16 @@
             cd backend
             npm audit --audit-level=critical
 
-
-              
-
-  workflows:
-    default:
-      jobs:
-        - build-frontend
-        - build-backend
-        - test-frontend:
-            requires: [build-frontend]
-        - test-backend:
-            requires: [build-backend]
-        - scan-frontend:
-            requires: [build-frontend]
-        - scan-backend:
-            requires: [build-backend]
+workflows:
+  default:
+    jobs:
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
