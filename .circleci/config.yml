@@ -156,6 +156,6 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend]
-      - notify_on_fai;ure:
+      - notify_on_failure:
           requires: [test-backend]
     
