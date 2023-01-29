@@ -1,24 +1,24 @@
 version: 2.1
 
-orbs: 
-    slack: circleci/slack@4.10.1
-    
-commands:
-    notify_on_failure:
-        steps:
-        - slack/notify:
-            event: fail
-            channel: cicd-pipeline
-            template: basic_fail_1
+orbs:
+  slack: circleci/slack@4.10.1
 
-    notify_on_success:
-        docker:
-        - image: cimg/base:stable
-        steps:
-        - slack/notify:
-            event: pass
-            channel: cicd-pipeline
-            template: success_tagged_deployment_1
+commands:
+  notify_on_failure:
+    steps:
+      - slack/notify:
+          event: fail
+          channel: cicd-pipeline
+          template: basic_fail_1
+
+  notify_on_success:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - slack/notify:
+          event: pass
+          channel: cicd-pipeline
+          template: success_tagged_deployment_1
 jobs:
   build-frontend:
     docker:
@@ -39,8 +39,8 @@ jobs:
             cd frontend
             npm run build
       - save_cache:
-            paths: [frontend/node_modules]
-            key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
+          paths: [frontend/node_modules]
+          key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
       - notify_on_failure
 
   build-backend:
@@ -62,8 +62,8 @@ jobs:
             cd backend
             npm run build
       - save_cache:
-            paths: [backend/node_modules]
-            key: backend-deps-{{ checksum "TIER/package-lock.json" }}
+          paths: [backend/node_modules]
+          key: backend-deps-{{ checksum "TIER/package-lock.json" }}
       - notify_on_failure
 
   test-frontend:
@@ -114,27 +114,23 @@ jobs:
       - restore_cache:
           keys:
             - frontend-deps-{{ checksum "frontend/package-lock.json" }}
-      
+
       - run:
           name: Install dependencies
           command: |
             cd frontend
             npm install
       - run:
-           name: Scan frontend packages
-           command: |
-              cd frontend
-              npm audit fix --force --audit-level=critical
-              npm audit fix --force --audit-level=critical
-              npm audit --audit-level=critical
-      
-          
-
-          
+          name: Scan frontend packages
+          command: |
+            cd frontend
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
-        - image: cimg/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -147,13 +143,12 @@ jobs:
             cd backend
             npm install
       - run:
-            name: Scan backend packages
-            command: |
-              cd backend
-              npm audit fix --force --audit-level=critical
-              npm audit fix --force --audit-level=critical
-              npm audit --audit-level=critical
-
+          name: Scan backend packages
+          command: |
+            cd backend
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical
 
 workflows:
   default:
@@ -170,4 +165,4 @@ workflows:
           requires: [build-backend]
       - notify_on_success:
           requires:
-              - <Last Job>
+            - <Last Job>
