@@ -168,6 +168,6 @@ workflows:
       - scan-backend:
           requires: [build-backend]
       - notify_on_success:
-          requires: [cleanup]
+          requires: [build-backend]
           
     
