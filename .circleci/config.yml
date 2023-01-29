@@ -1,7 +1,7 @@
 version: 2.1
 
-orbs:
-    slack: circleci/slack@4.10.1
+orbs: 
+  slack: circleci/slack@4.10.1
 
 commands:
     notify_on_failure:
@@ -10,7 +10,12 @@ commands:
             event: fail
             channel: cicd-pipeline
             template: basic_fail_1
-    notify_on_success:
+    
+
+    
+jobs:
+
+  notify_on_success:
         docker:
         - image: cimg/base:stable
         steps:
@@ -18,9 +23,6 @@ commands:
             event: pass
             channel: cicd-pipeline
             template: success_tagged_deployment_1
-
-    
-jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -65,7 +67,7 @@ jobs:
       - save_cache:
             paths: [backend/node_modules]
             key: backend-deps
-      - notify_on_failure
+       - notify_on_failure
 
   test-frontend:
     docker:
