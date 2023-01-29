@@ -118,7 +118,7 @@ jobs:
        
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-deps-{{ checksum "frontend/package-lock.json" }}
+          key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
       - notify_on_failure
 
   build-backend:
@@ -142,7 +142,7 @@ jobs:
             
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-deps-{{ checksum "backend/package-lock.json" }}
+          key: backend-deps-{{ checksum "TIER/package-lock.json" }}
       - notify_on_failure
 
   test-frontend:
@@ -152,16 +152,16 @@ jobs:
     - checkout
     - restore_cache:
        keys:
-         - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+         - frontend-deps-{{ checksum "TIER/package-lock.json" }}
     - run:
         name: Install dependencies
         command: |
-          cd frontend
+          cd TIER
           npm install
     - run:
-        name: Install dependencies
+        name: Install dependencis
         command: |
-          cd frontend
+          cd TIER
           npm install
       
                 
@@ -172,16 +172,16 @@ jobs:
     - checkout
     - restore_cache:
        keys:
-         - backend-deps-{{ checksum "backend/package-lock.json" }}
+         - backend-deps-{{ checksum "TIER/package-lock.json" }}
     - run:
         name: Install dependencies
         command: |
-          cd backend
+          cd TIER
           npm install
     - run:
-        name: Run backend unit tests
+        name: Run TIER unit tests
         command: |
-          cd backend
+          cd TIER
           npm run test
      
             
@@ -193,9 +193,9 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
-          name: Scan frontend dependencies
+          name: Scan TIER packages
           command: |
-            cd frontend
+            cd TIER
             npm install
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
@@ -210,9 +210,9 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run:
-          name: Scan backend dependencies
+          name: Scan TIER packages
           command: |
-            cd backend
+            cd TIER
             npm install
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
@@ -315,7 +315,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd frontend
+            cd TIER
             npm install
       - run:
           name: Get backend url
@@ -352,12 +352,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd backend
+            cd TIER
             npm install
       - run:
           name: Package Backend
           command: |
-            cd backend
+            cd TIER
             npm run build
             tar -czf artifact.tar.gz dist/* package*
 
