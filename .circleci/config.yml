@@ -67,7 +67,7 @@ jobs:
       - save_cache:
             paths: [backend/node_modules]
             key: backend-deps
-       - notify_on_failure
+      - notify_on_failure
 
   test-frontend:
     docker:
@@ -152,6 +152,7 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
             npm audit --audit-level=critical
+      - notify_on_failure
 
 workflows:
   default:
@@ -167,7 +168,6 @@ workflows:
       - scan-backend:
           requires: [build-backend]
       - notify_on_success:
-          requires:
-              - <Last Job>
+          requires: [cleanup]
           
     
