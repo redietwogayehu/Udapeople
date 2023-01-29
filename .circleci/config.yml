@@ -79,16 +79,44 @@ jobs:
 
   test-frontend:
     docker:
-      # Docker image here
+    - image: cimg/node:13.8.0 
     steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+    - checkout
+    - restore_cache:
+        keys:
+         - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+    - run:
+        name: Install dependencies
+        command: |
+          cd frontend
+          npm install
+    - run:
+        name: Run frontend unit tests
+        command: |
+          cd frontend
+          npm run test
+   
                 
   test-backend:
     docker:
+    - image: cimg/node:13.8.0
       # Docker image here
     steps:
+     - checkout
+     - restore_cache:
+        keys:
+         - backend-deps-{{ checksum "backend/package-lock.json" }}
+    
+     - run:
+        name: Install dependencies
+        command: |
+          cd backend
+          npm install
+     - run:
+        name: Run backend unit tests
+        command: |
+          cd backend
+          npm run test
       # Checkout code from git
       # Restore from cache
       # Your job code here
