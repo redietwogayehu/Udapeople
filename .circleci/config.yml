@@ -135,13 +135,13 @@ jobs:
 
   test-frontend:
     docker:
-      - image: cimg/node:13.8.0
+    - image: cimg/node:13.8.0
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
-      - run:
+    - checkout
+    - restore_cache:
+       keys:
+         - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+    - run:
         name: Install dependencies
         command: |
           cd frontend
@@ -151,17 +151,17 @@ jobs:
         command: |
           cd frontend
           npm run test
-        - notify_on_failure
-        
+      - notify_on_failure
+                
   test-backend:
     docker:
-      - image: cimg/node:13.8.0
+    - image: cimg/node:13.8.0
     steps:
-      - checkout
-      - restore_cache:
-          keys: 
-            - backend-deps-{{ checksum "backend/package-lock.json" }}
-      - run:
+    - checkout
+    - restore_cache:
+       keys:
+         - backend-deps-{{ checksum "backend/package-lock.json" }}
+    - run:
         name: Install dependencies
         command: |
           cd backend
