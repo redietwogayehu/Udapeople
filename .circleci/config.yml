@@ -10,6 +10,14 @@ commands:
             event: fail
             channel: cicd-pipeline
             template: basic_fail_1
+    notify_on_success:
+        docker:
+        - image: cimg/base:stable
+        steps:
+        - slack/notify:
+            event: pass
+            channel: cicd-pipeline
+            template: success_tagged_deployment_1
 
     
 jobs:
@@ -34,7 +42,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-deps-{{ checksum "TIER/package-lock.json" }}
-      - notify_on_failure
+      
 
   build-backend:
     docker:
@@ -55,8 +63,8 @@ jobs:
             cd backend
             npm run build
       - save_cache:
-          paths: [backend/node_modules]
-          key: backend-deps-{{ checksum "TIER/package-lock.json" }}
+            paths: [backend/node_modules]
+            key: backend-deps
       - notify_on_failure
 
   test-frontend:
