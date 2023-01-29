@@ -10,8 +10,6 @@ commands:
           event: fail
           channel: cicd-pipeline
           template: basic_fail_1
-  
-
 
   install_awscli:
     description: Install AWS CLI v2
@@ -135,9 +133,36 @@ jobs:
           key: backend-build
       - notify_on_failure
 
-  
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Run frontend tests
+          command: |
+            cd frontend
+            npm install
+            npm run test
+      - notify_on_failure
                 
-  
+  test-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Run backend tests
+          command: |
+            cd backend
+            npm install
+            npm run test
+      - notify_on_failure
+            
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
