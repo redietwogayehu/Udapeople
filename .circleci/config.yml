@@ -100,21 +100,21 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           name: Install dependencies
           command: |
             cd frontend
             npm install
       - run:
-          name: Build frontend 
+          name: Build frontend
           command: |
             cd frontend
             npm run build
-       
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - notify_on_failure
 
 
