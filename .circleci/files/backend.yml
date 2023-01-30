@@ -9,14 +9,7 @@ Parameters:
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    Properties:
-      
-      GroupDescription: Allow port 9100, 22 and port 3030.
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 9100
-          ToPort: 9100
-          CidrIp: 0.0.0.0/0
+    
   
   InstanceEIP:
     Type: AWS::EC2::EIP
