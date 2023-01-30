@@ -223,7 +223,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - install_awscli
+     
       - run:
           name: Ensure frontend infrastructure exist
           command: |
@@ -254,7 +254,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment      
+        
 
   configure-infrastructure:
     docker:
