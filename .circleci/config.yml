@@ -150,7 +150,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - frontend-deps-{{ checksum "TIER/package-lock.json" }}
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           name: Install dependencies
           command: |
