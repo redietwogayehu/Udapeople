@@ -100,8 +100,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+            
       - run:
           name: Install dependencies
           command: |
