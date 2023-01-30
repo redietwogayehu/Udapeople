@@ -7,10 +7,9 @@ Parameters:
     Type: String
 
 Resources:
-  InstanceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    ...
-  
+    InstanceSecurityGroup:
+        Type: AWS::EC2::SecurityGroupss
+     
   InstanceEIP:
     Type: AWS::EC2::EIP
     Properties:
@@ -20,6 +19,6 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      ...
+      
       ImageId: ami-00874d747dde814fa 
     
