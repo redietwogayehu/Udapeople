@@ -270,6 +270,7 @@ jobs:
     - checkout
     - install_ansible
     - install_awscli
+    - install_nodejs
     - restore_cache:
         keys: [backend-deps]
     - add_ssh_keys:
