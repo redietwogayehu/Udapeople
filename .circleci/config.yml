@@ -317,7 +317,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd TIER
+            cd frontend
             npm install
       - run:
           name: Get backend url
@@ -329,6 +329,7 @@ jobs:
 
             echo "API_URL=http://${BACKEND_PUBLIC_IP}:3030" >> frontend/.env
             cat frontend/.env
+            
       - run:
           name: Deploy frontend objects
           command: |
