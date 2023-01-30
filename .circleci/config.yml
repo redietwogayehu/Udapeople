@@ -82,12 +82,10 @@ commands:
             name: Revert migrations
             when: on_fail
             command: |
-
               SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
-
               # Logic for reverting the database state
-              f (( $SUCCESS == 1 ));
-              then
+              if (( $SUCCESS == 1 ));
+              then  
                 cd ~/project/backend
                 npm install
                 npm run migration:revert
@@ -284,7 +282,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment        
+      - destroy-environment       
 
   run-migrations:
     docker:
@@ -311,7 +309,7 @@ jobs:
               echo "No migrations are pending" 
             fi
       - destroy-environment
-      - revert-migrations  
+      - revert-migrations      
        
 
   deploy-frontend:
