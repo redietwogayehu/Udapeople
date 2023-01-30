@@ -327,7 +327,7 @@ jobs:
               echo "No migrations are pending" 
             fi
      
-      - revert-migrations     
+      - revert-migrations  
 
   deploy-frontend:
     docker:
