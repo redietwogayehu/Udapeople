@@ -273,7 +273,6 @@ jobs:
       - install_ansible
       - install_awscli
       - install_nodejs
-      
       - add_ssh_keys:
           fingerprints: ["65:fc:5a:76:ac:09:4d:8d:25:52:24:8a:6d:97:c9:5a"]
       - attach_workspace:
@@ -285,7 +284,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment       
+      - destroy-environment        
 
   run-migrations:
     docker:
@@ -312,7 +311,7 @@ jobs:
               echo "No migrations are pending" 
             fi
       - destroy-environment
-      - revert-migrations      
+      - revert-migrations  
        
 
   deploy-frontend:
