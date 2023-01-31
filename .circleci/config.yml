@@ -248,11 +248,11 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: cimg/base:2022.06
+      - image: amazon/aws-cli
       
     steps:
       - checkout
-      - image: amazon/aws-cli
+      
       - add_ssh_keys:
           fingerprints:
             - "52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"
@@ -418,3 +418,4 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
+
