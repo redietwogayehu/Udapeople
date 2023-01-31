@@ -359,8 +359,8 @@ workflows:
             branches:
               only: [master] 
       - configure-infrastructure:
-          requires: [run-migrations]
+          requires: [deploy-infrastructure]
       - run-migrations:
-          requires: [configure-infrastructure]
+          requires: [run-migrations]
       - deploy-frontend:
           requires: [run-migrations]
