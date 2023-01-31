@@ -264,7 +264,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-          no_output_timeout: 30m
+          no_output_timeout: 90m
       - run:
           name: Ensure frontend infrastructure exist
           command: |
@@ -273,7 +273,7 @@ jobs:
             --tags project=udapeople \
             --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-          no_output_timeout: 30m
+          no_output_timeout: 90m
       
       - run:
           name: Add back-end ip to ansible inventory
@@ -284,7 +284,7 @@ jobs:
               --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
-          no_output_timeout: 30m
+          no_output_timeout: 90m
      
       - persist_to_workspace:
           root: ~/
@@ -418,4 +418,3 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-
