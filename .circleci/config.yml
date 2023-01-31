@@ -219,33 +219,6 @@ jobs:
             npm audit --audit-level=critical
       - notify_on_failure
 
-  
-      
-  
-  
-         
-
-  configure-infrastructure:
-    docker:
-      - image: cimg/python:3.10
-    steps:
-      - checkout
-      - install_ansible
-      - install_awscli
-      - add_ssh_keys:
-          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Configure server
-          command: |
-            cd .circleci/ansible
-            cat inventory.txt
-
-            ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment 
-
-
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -289,6 +262,33 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
   run-migrations:
+      
+  
+  
+         
+
+  configure-infrastructure:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout
+      - install_ansible
+      - install_awscli
+      - add_ssh_keys:
+          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+
+            ansible-playbook -i inventory.txt configure-server.yml
+      - destroy-environment 
+
+
+  
     docker:
       - image: circleci/node:13.8.0
     steps:
