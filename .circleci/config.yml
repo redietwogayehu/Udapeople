@@ -228,6 +228,9 @@ jobs:
     steps:
       - checkout
       - install_awscli
+      - add_ssh_keys:
+          fingerprints:
+            - "52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"
       - run:
           name: Ensure frontend infrastructure exist
           command: |
@@ -271,7 +274,7 @@ jobs:
       - install_ansible
       - install_awscli
       - add_ssh_keys:
-          fingerprints: ["99:fc:16:9a:e2:07:3c:5f:dc:f1:69:7f:71:a9:48:fa"]
+          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
       - attach_workspace:
           at: ~/
       - run:
@@ -353,7 +356,7 @@ jobs:
       - restore_cache:
           keys: [backend-deps]
       - add_ssh_keys:
-          fingerprints: ["99:fc:16:9a:e2:07:3c:5f:dc:f1:69:7f:71:a9:48:fa"]
+          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
       - attach_workspace:
           at: ~/
       - run:
