@@ -227,7 +227,7 @@ jobs:
       
     steps:
       - checkout
-      - install_awscli
+      
       - run:
           name: Ensure frontend infrastructure exist
           command: |
