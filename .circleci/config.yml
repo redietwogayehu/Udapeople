@@ -161,18 +161,24 @@ jobs:
 
   test-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
+        # Docker image here
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
+
       - run:
-          name: Run backend tests
+          name: Install dependencies
           command: |
             cd backend
             npm install
+      - run:
+          name: Run backend unit tests
+          command: |
+            cd backend
             npm run test
-      - notify_on_failure
 
   scan-frontend:
     docker:
