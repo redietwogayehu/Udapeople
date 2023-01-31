@@ -223,11 +223,11 @@ jobs:
       
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/base:2022.06
       
     steps:
       - checkout
-      
+      - install_awscli
       - run:
           name: Ensure frontend infrastructure exist
           command: |
