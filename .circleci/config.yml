@@ -2,7 +2,7 @@ version: 2.1
 
 orbs: 
   slack: circleci/slack@4.10.1
-  aws-cli: circleci/aws-cli@2.0.3
+
 commands:
   notify_on_failure:
     steps:
@@ -232,15 +232,6 @@ jobs:
           fingerprints:
             - "52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"
       - run:
-          name: Ensure frontend infrastructure exist
-          command: |
-            aws cloudformation deploy \
-            --template-file .circleci/files/frontend.yml \
-            --tags project=udapeople \
-            --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-          no_output_timeout: 30m
-      - run:
           name: Ensure backend infrastructure exist
           command: |
             aws cloudformation deploy \
@@ -249,6 +240,16 @@ jobs:
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
           no_output_timeout: 30m
+      - run:
+          name: Ensure frontend infrastructure exist
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/files/frontend.yml \
+            --tags project=udapeople \
+            --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+          no_output_timeout: 30m
+      
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -264,6 +265,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+  
          
 
   configure-infrastructure:
