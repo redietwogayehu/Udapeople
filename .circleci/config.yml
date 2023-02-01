@@ -51,7 +51,26 @@ commands:
             sudo npm install --global n
             sudo n 13.8.0
 
- 
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            # Empty frontend bucket
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+
+            # Delete frontend stack
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+
+            # Delete backend stack
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
+
     
 
     
@@ -238,7 +257,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-         
+      - destroy-environment    
 
   configure-infrastructure:
     docker:
@@ -248,7 +267,7 @@ jobs:
       - install_ansible
       - install_awscli
       - add_ssh_keys:
-          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
+          fingerprints: ["65:fc:5a:76:ac:09:4d:8d:25:52:24:8a:6d:97:c9:5a"]
       - attach_workspace:
           at: ~/
       - run:
@@ -258,7 +277,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-          
+      - destroy-environment    
 
   run-migrations:
     docker:
@@ -284,7 +303,8 @@ jobs:
             else
               echo "No migrations are pending" 
             fi
-        
+      - destroy-environment
+      - revert-migrations   
 
   deploy-frontend:
     docker:
@@ -316,7 +336,8 @@ jobs:
             cd frontend
             npm run build
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-    
+      - destroy-environment
+      - revert-migrations  
                     
   deploy-backend:
     docker:
@@ -327,7 +348,7 @@ jobs:
       - install_awscli
       - install_nodejs
       - add_ssh_keys:
-          fingerprints: ["52:61:c6:91:7e:b1:79:8e:71:4b:bb:70:e7:c4:41:8a"]
+          fingerprints: ["65:fc:5a:76:ac:09:4d:8d:25:52:24:8a:6d:97:c9:5a"]
       - attach_workspace:
           at: ~/
       - run:
@@ -355,7 +376,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
      
-
+      - destroy-environment
+      - revert-migrations  
   
               
 
