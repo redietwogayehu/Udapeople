@@ -164,7 +164,26 @@ jobs:
             npm run test
       - notify_on_failure
 
- 
+  test-backend:
+    docker:
+      - image: cimg/node:13.8.0
+        # Docker image here
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
+
+      - run:
+          name: Install dependencies
+          command: |
+            cd backend
+            npm install
+      - run:
+          name: Run backend unit tests
+          command: |
+            cd backend
+            npm run test
 
   scan-frontend:
     docker:
@@ -235,7 +254,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-         
+      - destroy-environment      
 
   configure-infrastructure:
     docker:
@@ -255,7 +274,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-        
+      - destroy-environment       
 
   run-migrations:
     docker:
@@ -455,7 +474,8 @@ workflows:
       - build-backend
       - test-frontend:
           requires: [build-frontend]
-     
+      - test-backend:
+          requires: [build-backend]
       - scan-backend:
           requires: [build-backend]
       - scan-frontend:
