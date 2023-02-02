@@ -267,7 +267,7 @@ jobs:
       - install_ansible
       - install_awscli
       - add_ssh_keys:
-          fingerprints: ["b9:4e:dc:c9:f3:5c:ef:2c:ee:4e:fd:c1:89:91:4a:ba"]
+          fingerprints: ["65:fc:5a:76:ac:09:4d:8d:25:52:24:8a:6d:97:c9:5a"]
       - attach_workspace:
           at: ~/
       - run:
@@ -285,10 +285,13 @@ jobs:
     steps:
       - checkout
       - install_awscli
-     
+      
       - restore_cache:
           keys: [backend-build]
-     
+      - run:
+          name: Install Typescript
+          command: |
+            npm install typescript
 
       - run:
           name: Run migrations
@@ -350,7 +353,7 @@ jobs:
       - install_awscli
       - install_nodejs
       - add_ssh_keys:
-          fingerprints: ["b9:4e:dc:c9:f3:5c:ef:2c:ee:4e:fd:c1:89:91:4a:ba"]
+          fingerprints: ["65:fc:5a:76:ac:09:4d:8d:25:52:24:8a:6d:97:c9:5a"]
       - attach_workspace:
           at: ~/
       - run:
