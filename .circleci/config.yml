@@ -285,7 +285,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - npm install typescript
+     
       - restore_cache:
           keys: [backend-build]
       - run:
