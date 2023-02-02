@@ -288,10 +288,7 @@ jobs:
      
       - restore_cache:
           keys: [backend-build]
-      - run:
-          name: Install Typescript
-          command: |
-            npm install typescript
+     
 
       - run:
           name: Run migrations
