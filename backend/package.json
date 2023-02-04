@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is just a test.",
   "author": "",
-  "license": "MIT", 
+  "license": "MIT",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -31,11 +31,6 @@
     "migrations:revert": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:revert",
     "update:domain": "npm update @kiwihr/kiwi-domain"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/redietwogayehu/udapeople.git"
-  },
-
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^6.11.11",
