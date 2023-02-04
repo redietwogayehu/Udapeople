@@ -148,7 +148,6 @@ jobs:
             paths: [backend/node_modules]
             key: backend-deps
       - notify_on_failure
-
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -289,8 +288,6 @@ jobs:
       
       - restore_cache:
           keys: [backend-build]
-     
-
       - run:
           name: Run migrations
           command: |
@@ -397,7 +394,6 @@ jobs:
               --output text)
 
             export API_URL=http://${BACKEND_PUBLIC_IP}:3030
- 
             if curl -s $API_URL/api/status | grep "ok"
             then
               exit 0
@@ -411,12 +407,13 @@ jobs:
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               # This is the intentional error, if "Welcome" is indeed in the response this step will exit with exit code 1
-              exit 0
+              exit 1
             else
               exit 2
             fi
       - destroy-environment
-      - revert-migrations   
+      - revert-migrations
+  
               
 
 workflows:
