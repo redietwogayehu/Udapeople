@@ -394,7 +394,6 @@ jobs:
               --output text)
 
             export API_URL=http://${BACKEND_PUBLIC_IP}:3030
- 
             if curl -s $API_URL/api/status | grep "ok"
             then
               exit 0
@@ -408,7 +407,7 @@ jobs:
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               # This is the intentional error, if "Welcome" is indeed in the response this step will exit with exit code 1
-              exit 0
+              exit 1
             else
               exit 2
             fi
