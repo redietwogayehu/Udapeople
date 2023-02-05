@@ -409,7 +409,7 @@ jobs:
               # This is the intentional error, if "Welcome" is indeed in the response this step will exit with exit code 1
               exit 0
             else
-              exit 2
+              exit 1
             fi
       - destroy-environment
       - revert-migrations
