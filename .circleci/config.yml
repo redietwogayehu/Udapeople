@@ -51,7 +51,26 @@ commands:
             sudo npm install --global n
             sudo n 13.8.0
 
- 
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            # Empty frontend bucket
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+
+            # Delete frontend stack
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+
+            # Delete backend stack
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
+
     
 
     
@@ -129,7 +148,6 @@ jobs:
             paths: [backend/node_modules]
             key: backend-deps
       - notify_on_failure
-
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -165,6 +183,7 @@ jobs:
           command: |
             cd backend
             npm run test
+
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -237,7 +256,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-         
+      - destroy-environment    
 
   configure-infrastructure:
     docker:
@@ -257,7 +276,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-          
+      - destroy-environment    
 
   run-migrations:
     docker:
@@ -265,6 +284,8 @@ jobs:
     steps:
       - checkout
       - install_awscli
+     
+      
       - restore_cache:
           keys: [backend-build]
       - run:
@@ -279,10 +300,12 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl --cacert https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             else
               echo "No migrations are pending" 
             fi
+      - destroy-environment
+      - revert-migrations
   deploy-frontend:
     docker:
       - image: cimg/python:3.10
@@ -313,7 +336,8 @@ jobs:
             cd frontend
             npm run build
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-    
+      - destroy-environment
+      - revert-migrations  
                     
   deploy-backend:
     docker:
@@ -352,6 +376,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
      
+      - destroy-environment
+      - revert-migrations  
   smoke-test:
     docker:
       - image: cimg/base:stable
@@ -387,6 +413,8 @@ jobs:
             fi
       - destroy-environment
       - revert-migrations
+    
+  
               
 
 workflows:
