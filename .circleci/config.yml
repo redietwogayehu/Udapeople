@@ -293,6 +293,8 @@ jobs:
             else
               echo "No migrations are pending" 
             fi
+      - destroy-environment
+      - revert-migrations
       
   deploy-frontend:
     docker:
