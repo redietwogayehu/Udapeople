@@ -1,0 +1,5 @@
+URL01: https://github.com/redietwogayehu/udapeople.git
+URL02: http://udapeople-e32cb8a.s3-website-us-east-1.amazonaws.com
+URL03: http://ddv55s1sx6jh.cloudfront.net
+URL04: ec2-52-91-120-97.compute-1.amazonaws.com
+URL05: ec2-44-200-254-58.compute-1.amazonaws.com:9090
